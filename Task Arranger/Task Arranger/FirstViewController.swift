@@ -11,6 +11,27 @@ import UIKit
 class FirstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
     @IBOutlet var buttonTest: UIButton!
     @IBAction func buttonTest(_ sender: UIButton) {
+        
+        
+        var dbManager: DBManager = DBManager()
+        // Prepare the query string.
+        var query : NSString!
+        query = "insert into peopleInfo values(null, '%@', '%@', %d)";
+        
+        // Execute the query.
+        dbManager.executeQuery(query as String!);
+        
+        // If the query was successfully executed then pop the view controller.
+        if (dbManager.affectedRows != 0) {
+            NSLog("Query was executed successfully. Affected rows = %d", dbManager.affectedRows);
+            
+            // Pop the view controller.
+            //navigationController popViewControllerAnimated:YES;
+        }
+        else{
+            NSLog("Could not execute the query.");
+        }
+        
         tasks.add(textNew.text!)
         taskTable.reloadData()
     }
