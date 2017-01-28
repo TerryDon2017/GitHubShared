@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		BB07FB311E39B7A4002C65B6 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BB07FB301E39B7A4002C65B6 /* libsqlite3.tbd */; };
 		BB07FB351E39B8F9002C65B6 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB07FB341E39B8F9002C65B6 /* DBManager.m */; };
-		BB07FB371E39DE48002C65B6 /* sampledb.sql in Resources */ = {isa = PBXBuildFile; fileRef = BB07FB361E39DE48002C65B6 /* sampledb.sql */; };
+		BB71FFBD1E3C726E0012756B /* newtask.sql in Resources */ = {isa = PBXBuildFile; fileRef = BB71FFBC1E3C726E0012756B /* newtask.sql */; };
 		BB7E6FB11E11390900085B83 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7E6FB01E11390900085B83 /* AppDelegate.swift */; };
 		BB7E6FB31E11390900085B83 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7E6FB21E11390900085B83 /* FirstViewController.swift */; };
 		BB7E6FB51E11390900085B83 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7E6FB41E11390900085B83 /* SecondViewController.swift */; };
@@ -23,7 +23,7 @@
 		BB07FB321E39B8F9002C65B6 /* Task Arranger-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Task Arranger-Bridging-Header.h"; sourceTree = "<group>"; };
 		BB07FB331E39B8F9002C65B6 /* DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
 		BB07FB341E39B8F9002C65B6 /* DBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBManager.m; sourceTree = "<group>"; };
-		BB07FB361E39DE48002C65B6 /* sampledb.sql */ = {isa = PBXFileReference; lastKnownFileType = file; path = sampledb.sql; sourceTree = "<group>"; };
+		BB71FFBC1E3C726E0012756B /* newtask.sql */ = {isa = PBXFileReference; lastKnownFileType = file; path = newtask.sql; sourceTree = "<group>"; };
 		BB7E6FAD1E11390900085B83 /* Task Arranger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Task Arranger.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB7E6FB01E11390900085B83 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BB7E6FB21E11390900085B83 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -57,7 +57,6 @@
 		BB7E6FA41E11390900085B83 = {
 			isa = PBXGroup;
 			children = (
-				BB07FB361E39DE48002C65B6 /* sampledb.sql */,
 				BB7E6FAF1E11390900085B83 /* Task Arranger */,
 				BB7E6FAE1E11390900085B83 /* Products */,
 				BB07FB2F1E39B7A4002C65B6 /* Frameworks */,
@@ -75,6 +74,7 @@
 		BB7E6FAF1E11390900085B83 /* Task Arranger */ = {
 			isa = PBXGroup;
 			children = (
+				BB71FFBC1E3C726E0012756B /* newtask.sql */,
 				BB7E6FB01E11390900085B83 /* AppDelegate.swift */,
 				BB7E6FB21E11390900085B83 /* FirstViewController.swift */,
 				BB7E6FB41E11390900085B83 /* SecondViewController.swift */,
@@ -151,7 +151,7 @@
 			files = (
 				BB7E6FBD1E11390900085B83 /* LaunchScreen.storyboard in Resources */,
 				BB7E6FBA1E11390900085B83 /* Assets.xcassets in Resources */,
-				BB07FB371E39DE48002C65B6 /* sampledb.sql in Resources */,
+				BB71FFBD1E3C726E0012756B /* newtask.sql in Resources */,
 				BB7E6FB81E11390900085B83 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

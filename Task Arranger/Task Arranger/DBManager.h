@@ -15,8 +15,11 @@
 @property (nonatomic) int affectedRows;
 
 @property (nonatomic) long long lastInsertedRowID;
+
+// public method 1
 -(NSArray *)loadDataFromDB:(NSString *)query;
 
+// public method 2
 -(void)executeQuery:(NSString *)query;
 
 @end

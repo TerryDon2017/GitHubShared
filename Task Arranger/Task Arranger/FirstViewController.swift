@@ -9,14 +9,22 @@
 import UIKit
 
 class FirstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
-    @IBOutlet var buttonTest: UIButton!
+    var dbManager : DBManager = DBManager()
+    var tasks : NSMutableArray = ["feed the cat","kick the ball","Play a game"]
+    var taskArray = [[String]]()
+    var largestIndex : Int = 0
+    @IBOutlet var textNew : UITextField!
+    @IBOutlet var taskTable : UITableView!
+    @IBOutlet var buttonTest : UIButton!
     @IBAction func buttonTest(_ sender: UIButton) {
         
-        
-        var dbManager: DBManager = DBManager()
         // Prepare the query string.
-        var query : NSString!
-        query = "insert into peopleInfo values(null, '%@', '%@', %d)";
+        let query : NSString!
+        let newIndex : String!
+        let inputText : String
+        newIndex = String(largestIndex + 1) as String!
+        inputText = textNew.text!
+        query = "insert into tasks values(" + newIndex +  ",'" + inputText + "');" as NSString!
         
         // Execute the query.
         dbManager.executeQuery(query as String!);
@@ -32,19 +40,24 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
             NSLog("Could not execute the query.");
         }
         
-        tasks.add(textNew.text!)
+        // refresh the Task Array
+        refreshTaskSQLite()
+        
         taskTable.reloadData()
     }
-    
-    @IBOutlet var textNew: UITextField!
-    @IBOutlet var taskTable: UITableView!
-    var tasks:NSMutableArray = ["Eat an Apple","Do the homework","Play a game"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         taskTable.dataSource = self
         taskTable.delegate = self
+        
+        // Initialize the dbManager object.
+        dbManager = DBManager(databaseFilename:"newtask.sql");
+        
+        // refresh the Task Array
+        refreshTaskSQLite()
+        
         
     }
     
@@ -68,9 +81,35 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         tasks.removeObject(at: indexPath.row)
+        let deleteRowIndex:String = taskArray[indexPath.row][0]
+        NSLog("Delete Index: " + deleteRowIndex )
+        deleteRowSQL(deleteRowIndex: deleteRowIndex)
         tableView.deleteRows(at: [indexPath], with: .fade)
+        
     }
-       
+    func refreshTaskSQLite(){
+        tasks.removeAllObjects()
+        taskArray.removeAll()
+        
+        let query : NSString!
+        query = "select * from tasks order by id asc;"
+        var resultTable : NSArray
+        resultTable = dbManager.loadData(fromDB: query as String!) as NSArray
+        NSLog("task count = " + String(resultTable.count))
+        for  index in 0...(resultTable.count-1){
+            let resultRow = resultTable[index] as! NSArray
+            taskArray.append(resultRow as! [String])
+            tasks.add(resultRow[1])
+            let r = resultRow[0] as! String
+            let j : Int = Int(r)!
+            if(largestIndex < j) {
+                largestIndex = j
+            }
+        }
+    }
+    func deleteRowSQL(deleteRowIndex:String){
+        
+    }
 }
 
 
