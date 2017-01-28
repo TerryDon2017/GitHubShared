@@ -8,9 +8,9 @@
 
 import UIKit
 
-class FirstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
+class FirstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate{
     var dbManager : DBManager = DBManager()
-    var tasks : NSMutableArray = ["feed the cat","kick the ball","Play a game"]
+    //var tasks : NSMutableArray = ["feed the cat","kick the ball","Play a game"]
     var taskArray = [[String]]()
     var largestIndex : Int = 0
     @IBOutlet var textNew : UITextField!
@@ -51,7 +51,7 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         // Do any additional setup after loading the view, typically from a nib.
         taskTable.dataSource = self
         taskTable.delegate = self
-        
+        textNew.delegate = self
         // Initialize the dbManager object.
         dbManager = DBManager(databaseFilename:"newtask.sql");
         
@@ -69,26 +69,25 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         return 1
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tasks.count
+        return taskArray.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = tasks[indexPath.row] as? String
+        cell.textLabel?.text = taskArray[indexPath.row][1] as String
         return cell
     }
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         return UITableViewCellEditingStyle.delete
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        tasks.removeObject(at: indexPath.row)
+        //tasks.removeObject(at: indexPath.row)
         let deleteRowIndex:String = taskArray[indexPath.row][0]
-        NSLog("Delete Index: " + deleteRowIndex )
         deleteRowSQL(deleteRowIndex: deleteRowIndex)
         tableView.deleteRows(at: [indexPath], with: .fade)
         
     }
     func refreshTaskSQLite(){
-        tasks.removeAllObjects()
+       // tasks.removeAllObjects()
         taskArray.removeAll()
         
         let query : NSString!
@@ -99,7 +98,7 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         for  index in 0...(resultTable.count-1){
             let resultRow = resultTable[index] as! NSArray
             taskArray.append(resultRow as! [String])
-            tasks.add(resultRow[1])
+          //  tasks.add(resultRow[1])
             let r = resultRow[0] as! String
             let j : Int = Int(r)!
             if(largestIndex < j) {
@@ -108,7 +107,26 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
     }
     func deleteRowSQL(deleteRowIndex:String){
+        NSLog("Delete Index: " + deleteRowIndex )
+        dbManager.executeQuery("delete from tasks where id = " + deleteRowIndex)
+        // If the query was successfully executed then pop the view controller.
+        if (dbManager.affectedRows != 0) {
+            NSLog("Query was executed successfully. Affected rows = %d", dbManager.affectedRows);
+            
+            // Pop the view controller.
+            //navigationController popViewControllerAnimated:YES;
+        }
+        else{
+            NSLog("Could not execute the query.");
+        }
         
+        // refresh the Task Array
+        refreshTaskSQLite()
+        
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
 }
 
