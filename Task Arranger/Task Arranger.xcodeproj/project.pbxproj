@@ -16,6 +16,7 @@
 		BB7E6FB81E11390900085B83 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB7E6FB61E11390900085B83 /* Main.storyboard */; };
 		BB7E6FBA1E11390900085B83 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB7E6FB91E11390900085B83 /* Assets.xcassets */; };
 		BB7E6FBD1E11390900085B83 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB7E6FBB1E11390900085B83 /* LaunchScreen.storyboard */; };
+		BBB00C261E3F8E070059FB4D /* taskdbv3.sql in Resources */ = {isa = PBXBuildFile; fileRef = BBB00C251E3F8E070059FB4D /* taskdbv3.sql */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		BB7E6FB91E11390900085B83 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BB7E6FBC1E11390900085B83 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BB7E6FBE1E11390900085B83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BBB00C251E3F8E070059FB4D /* taskdbv3.sql */ = {isa = PBXFileReference; lastKnownFileType = file; path = taskdbv3.sql; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 		BB7E6FAF1E11390900085B83 /* Task Arranger */ = {
 			isa = PBXGroup;
 			children = (
+				BBB00C251E3F8E070059FB4D /* taskdbv3.sql */,
 				BB71FFBC1E3C726E0012756B /* newtask.sql */,
 				BB7E6FB01E11390900085B83 /* AppDelegate.swift */,
 				BB7E6FB21E11390900085B83 /* FirstViewController.swift */,
@@ -150,6 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB7E6FBD1E11390900085B83 /* LaunchScreen.storyboard in Resources */,
+				BBB00C261E3F8E070059FB4D /* taskdbv3.sql in Resources */,
 				BB7E6FBA1E11390900085B83 /* Assets.xcassets in Resources */,
 				BB71FFBD1E3C726E0012756B /* newtask.sql in Resources */,
 				BB7E6FB81E11390900085B83 /* Main.storyboard in Resources */,
