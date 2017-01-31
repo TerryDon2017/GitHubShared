@@ -13,6 +13,7 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     let dbFileName = "taskdbv3.sql"
     var taskArray = [[String]]()
     var largestIndex : Int = 0
+    var tableIsEditing : Bool = false
     @IBOutlet var textNew : UITextField!
     @IBOutlet var detailNew: UITextField!
     @IBOutlet var taskTable : UITableView!
@@ -58,6 +59,7 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         // refresh the Task Array
         refreshTaskSQLite()
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -72,6 +74,13 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        
+        //set long press recognizer
+        let longPress : UILongPressGestureRecognizer = UILongPressGestureRecognizer()
+        longPress.addTarget(self, action: #selector(self.showOrHideReOrderControl))
+        longPress.minimumPressDuration = 0.5
+        cell.addGestureRecognizer(longPress)
+        
         //set the cell content to display
         cell.textLabel?.text = taskArray[indexPath.row][1] as String
         cell.detailTextLabel?.text = taskArray[indexPath.row][2] as String
@@ -85,8 +94,35 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         return UITableViewCellEditingStyle.delete
     }
+    //***********************************
+    // Begin ReOrder Row ****************
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+        //Allow the proposed Destination
+        return proposedDestinationIndexPath
+    }
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        /* 
+            1. save the reorder row from "sourceIndexPath.row"
+            2. remove the reorder row from "sourceIndexPath.row"
+            3. insert the saved row into "destinationIndexPath.row"
+         */
+        
+        let takeAway = taskArray[sourceIndexPath.row]
+        taskArray.remove(at: sourceIndexPath.row)
+        taskArray.insert(takeAway, at: (destinationIndexPath.row))
+        tableView.reloadData()
+        tableView.setEditing(false, animated: true)
+        
+        //save new order to SQLite
+        saveNewOrderToSQLite()
+    }
+    // End ReOrder Row ******************
+    //***********************************
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        //tasks.removeObject(at: indexPath.row)
+        //delete row
         let deleteRowIndex:String = taskArray[indexPath.row][0]
         deleteRowSQL(deleteRowIndex: deleteRowIndex)
         tableView.deleteRows(at: [indexPath], with: .fade)
@@ -104,7 +140,7 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
     }
     func setSQLtaskComplete(selectRowIndex:String, setComplete:Bool){
-        NSLog("set Index: " + selectRowIndex )
+        NSLog("complete Index: " + selectRowIndex )
         var comp:Int = 0
         if(setComplete == true){
             comp = 1
@@ -149,6 +185,48 @@ class FirstViewController: UIViewController, UITableViewDataSource, UITableViewD
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
+    }
+    func showOrHideReOrderControl(){
+        taskTable.setEditing(true, animated: true)
+    }
+    func saveNewOrderToSQLite(){
+        //NSLog("before re Arrange")
+        //outputTaskList()
+        // update the task id with (-1)
+        for i in 1 ... (taskArray.count){
+            let old = taskArray[i-1][0] as String
+            var query = "update tasks set id = "
+            query.append(String( -1 * i ) )
+            query.append(" where id = ")
+            query.append(String(old))
+            query.append(" ;")
+            dbManager.executeQuery(query)
+            
+        }
+        refreshTaskSQLite()
+        //NSLog("after 1 Arrange")
+        //outputTaskList()
+        // change back the - id into + id
+        for i in 1 ... taskArray.count{
+            var query = "update tasks set id = "
+            query.append(String(i))
+            query.append(" where id = ")
+            query.append(String(-1 * i ))
+            query.append(" ;")
+            dbManager.executeQuery(query)
+            
+        }
+        refreshTaskSQLite()
+        //NSLog("after 2 Arrange")
+        //outputTaskList()
+        
+    }
+    func outputTaskList(){
+        for i in 0...(taskArray.count-1){
+            var s : String=taskArray[i][0] + " - "
+            s.append(taskArray[i][1])
+            NSLog(s)
+        }
     }
     
 }

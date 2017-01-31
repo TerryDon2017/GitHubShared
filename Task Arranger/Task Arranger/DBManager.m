@@ -161,8 +161,11 @@
     // Returned the loaded results.
     return (NSArray *)self.arrResults;
 }
+
 -(void)executeQuery:(NSString *)query{
     // Run the query and indicate that is executable.
     [self runQuery:[query UTF8String] isQueryExecutable:YES];
 }
+
 @end
+

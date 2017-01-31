@@ -21,5 +21,4 @@
 
 // public method 2
 -(void)executeQuery:(NSString *)query;
-
 @end
